@@ -1,0 +1,85 @@
+/***************
+ *Ron Crisman
+ *CS 241
+ *Standard back tracking
+ *Sudoku solver
+ ***************/
+
+#include <stdio.h>
+#include <string.h>
+//Sub square size
+#define SUBSQ 3
+//Size of the grid (std sudoku is 9)
+#define STDGRD 9
+//Empty and full of specified number makes more sense
+#define EMPTY 1
+#define FULL 0
+
+int sudoku[STDGRD][STDGRD]; //Storage for the puzzle
+
+int solved = 0;
+
+//Checks for repeat of number on given row
+int chkRow(int row, int num)
+{
+  int col; //grumble grumble can't initilize vars in loops
+
+  for(col = 0; col < STDGRD; col++)
+    {
+      if(sudoku[row][col] == num)
+	{
+	  return FULL;
+	}
+      else
+	{
+	  return EMPTY;
+	}
+    }
+}
+
+//Checks for given number on given column
+int chkCol(int col, int num)
+{
+  int row;
+  
+  for(row = 0; row < STDGRD; row++)
+    {
+      if(sudoku[row][col] == num)
+	{
+	  return FULL;
+	}
+      else
+	{
+	  return EMPTY;
+	}
+    }
+}
+
+/**Ok, trickier part. Checking to see if the number fits in the 3x3
+ *grid. First, finding the initial point of the 3x3 grid
+ *Orignally using much more complicated method until the (row/3)*3
+ *was mentioned in class. Got rid of all my stupid if statements!
+ */
+
+int chkGrd(int row, int col, int num)
+{
+  int r;
+  int c;
+
+  row = (row/3)*3;
+  col = (col/3)*3;
+
+  //loops through subsquare. If the number is present, return FULL
+  for(c = 0; c < SUBSQ; c++)
+    for (r = 0; r < SUBSQ; r++)
+      if(sudoku[row + r][col + c] == num)
+	{
+	return FULL; 
+	}
+      else
+	{
+	  return EMPTY;
+	}
+}
+
+void 
